@@ -9,7 +9,7 @@ Este ejercicio está diseñado para enseñarte a realizar consultas SQL con pris
 
 1. 🍴 Haz fork del repositorio.
 2. 📥 Clona tu fork del repositorio.
-3. 🎯 Crea las consultas en express para obtener las informacioens.
+3. 🎯 Crea las consultas en express para obtener las informaciones.
 4. ✅ Ejecuta tus consultas para asegurarte de que funcionan como se espera.
 5. 📤 Haz commit y push de tus cambios al repositorio.
 6. 📧 Abre un Pull Request con tus soluciones para revisión.
@@ -18,6 +18,30 @@ Este ejercicio está diseñado para enseñarte a realizar consultas SQL con pris
 El archivo son `libros.csv` y `ventas.csv`
 
 ✔️ Tareas a Realizar
+## creación de la base de datos
+- [ ] Ejecuta el comando `npx prisma init` para crear el archivo `prisma/schema.prisma`.
+- [ ] Añade los modelos `Libros` y `Ventas` al archivo `prisma/schema.prisma`.
+```prisma
+model Libro {
+  ISBN       String   @id @default(uuid())
+  Titulo     String
+  Autor      String
+  Precio     Float
+  Ventas     Venta[]
+}
+
+model Venta {
+  ID_Venta    Int      @id @default(autoincrement())
+  Libro       Libro    @relation(fields: [ISBN], references: [ISBN])
+  ISBN        String
+  Fecha_Venta DateTime
+  Cantidad    Int
+}
+```
+
+## creación de las consultas
+- [ ] Ejecuta el comando `npx prisma migrate dev --name init` para crear las tablas en la base de datos.
+- [ ] Importa los archivos `libros.csv` y `ventas.csv` en la base de datos.
 - [ ] Endpoint `/sales/last-year`: Filtra las ventas para mostrar solo las que se realizaron en el último año.
 - [ ] Endpoint `/books/total-revenue`: Agrupa los resultados por `Titulo` y `Autor` y calcula el total de ingresos por libro.
 - [ ] Endpoint `/sales/most`: Ordena los libros por cantidad vendida para encontrar el más y menos vendido.

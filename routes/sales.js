@@ -9,10 +9,8 @@ router.get("/", async (req, res) => {
     const sales = await prisma.Venta.findMany();
     res.json(sales);
   } catch (error) {
-    console.error("Error:", error);
-    res
-      .status(500)
-      .json({ error: "Internal Server Error", details: error.message });
+    console.error(error);
+    res.json("Server error");
   }
 });
 

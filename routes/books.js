@@ -14,6 +14,23 @@ router.get("/", async (req, res) => {
   }
 });
 
+//Endpoint /books/with-sales: Realiza un JOIN para combinar las tablas Libros y Ventas basándote en el ISBN.
+//Tuve que incluir esta ruta en este order para evitar conflictos con la siguiente ruta
+
+router.get("/with-sales", async (req, res) => {
+  try {
+    const booksWithSales = await prisma.Venta.findMany({
+      include: {
+        Libro: true, // Esto incluirá los datos del autor relacionado con cada post
+      },
+    });
+    res.json(booksWithSales);
+  } catch (error) {
+    console.error(error);
+    res.json("Server error");
+  }
+});
+
 //Endpoint /books/:isbn: Muestra un libro en particular.
 
 router.get("/:isbn", async (req, res) => {
@@ -63,7 +80,5 @@ router.get("/price/:price", async (req, res) => {
     res.json("Server error");
   }
 });
-
-//Endpoint /books/with-sales: Realiza un JOIN para combinar las tablas Libros y Ventas basándote en el ISBN.
 
 module.exports = router;

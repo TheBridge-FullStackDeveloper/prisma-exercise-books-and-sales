@@ -20,18 +20,23 @@ router.get("/top", async (req, res) => {
   try {
     const booksWithSales = await prisma.Venta.findMany({
       include: {
-        Libro: true,
+        Libro: {
+          select: {
+            Titulo: true,
+            Autor: true,
+            Precio: true,
+          },
+        },
       },
     });
     const incomeArray = booksWithSales
       .map((object) => object.Cantidad * object.Libro.Precio)
       .sort((a, b) => b - a);
     const biggestIncome = incomeArray[0];
-    console.log("The biggest income is " + biggestIncome);
     const bookWithBiggestIncome = booksWithSales.filter(
       (object) => object.Cantidad * object.Libro.Precio === biggestIncome
     );
-    res.send(bookWithBiggestIncome);
+    res.json(bookWithBiggestIncome);
   } catch (error) {
     console.error(error);
     res.json("Server error");
@@ -41,7 +46,6 @@ router.get("/top", async (req, res) => {
 //Endpoint /sales/:id: Muestra una venta en particular.
 
 router.get("/:id", async (req, res) => {
-  console.log(req.params.id);
   try {
     const sale = await prisma.Venta.findUnique({
       where: {

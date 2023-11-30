@@ -21,7 +21,13 @@ router.get("/with-sales", async (req, res) => {
   try {
     const booksWithSales = await prisma.Venta.findMany({
       include: {
-        Libro: true,
+        Libro: {
+          select: {
+            Titulo: true,
+            Autor: true,
+            Precio: true,
+          },
+        },
       },
     });
     res.json(booksWithSales);

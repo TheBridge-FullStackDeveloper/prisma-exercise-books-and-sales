@@ -11,6 +11,24 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/with-sales", async (req, res) => {
+  try {
+    const booksWithSales = await prisma.venta.findMany({
+      include: {
+        Libro: {
+          select: {
+            Titulo: true,
+            Autor: true,
+            Precio: true,
+          },
+        },
+      },
+    });
+    res.json(booksWithSales);
+  } catch (error) {
+    res.json("Server error");
+  }
+});
 router.get("/:isbn", async (req, res) => {
   try {
     const bookISBN = await prisma.libro.findUnique({
@@ -47,19 +65,6 @@ router.get("/price/:price", async (req, res) => {
       },
     });
     res.json(booksPrice);
-  } catch (error) {
-    res.json("Server error");
-  }
-});
-
-router.get("/with-sales", async (req, res) => {
-  try {
-    const booksWithSales = await prisma.libro.findMany({
-      include: {
-        ISBN: true
-      },
-    });
-    res.json(booksWithSales);
   } catch (error) {
     res.json("Server error");
   }

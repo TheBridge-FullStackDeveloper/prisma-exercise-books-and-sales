@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/", async (req, res) => {});
+router.get("\routes", async (req, res) => {});
 
-module.exports = router;
+  module.exports = router;

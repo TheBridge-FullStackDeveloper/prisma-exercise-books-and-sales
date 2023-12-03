@@ -3,11 +3,20 @@ services:
   db:
     image: postgres:latest
     ports:
-      - "5432:5432"
+      - "5432:5432" # El puerto original del host mapeado al puerto por defecto de PostgreSQL
     env_file:
       - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  new_db:
+    image: postgres:latest
+    ports:
+      - "5433:5432" # Un puerto diferente en el host para evitar conflictos
+    env_file:
+      - .env
+    volumes:
+      - new_postgres_data:/var/lib/postgresql/data
 
   web:
     build: .
@@ -20,3 +29,4 @@ services:
 
 volumes:
   postgres_data:
+  new_postgres_data:

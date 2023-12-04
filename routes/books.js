@@ -59,6 +59,7 @@ router.get("/with-sales", async (req, res) => {
   }
 });
 
+
 router.get("/:isbn", async (req, res) => {
   const book = await prisma.libro.findUnique({
     where: {
